@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { theme } from '../../constanta/theme';
+import { theme } from '../../utils/theme';
 
 export const Gallery = styled.ul`
   display: grid;

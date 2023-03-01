@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from './ButtonLoadMore.styled';
 
-export const ButtonLoadMore = ({ onLoadMore }) => {
+export const ButtonLoadMore = ({ onLoadMore, page, totalPages }) => {
   return (
     <Button type="button" onClick={onLoadMore}>
       Load more

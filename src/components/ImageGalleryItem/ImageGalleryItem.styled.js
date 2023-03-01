@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { theme } from '../../constanta/theme';
+import { theme } from '../../utils/theme';
 
 export const GalleryItem = styled.li`
   border-radius: ${theme.borders[2]}px;
@@ -11,6 +11,7 @@ export const GalleryImage = styled.img`
   height: 260px;
   object-fit: cover;
   transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
   &:hover {
     transform: scale(1.03);
     cursor: zoom-in;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import loupe from '../../constanta/loupe.svg';
+import loupe from '../../utils/loupe.svg';
 import {
   SearchbarWrapper,
   SearchForm,

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { theme } from '../../constanta/theme';
+import { theme } from '../../utils/theme';
 
 export const Button = styled.button`
   padding: ${theme.sizes[4]}px ${theme.sizes[6]}px;
@@ -20,6 +20,7 @@ export const Button = styled.button`
   font-weight: 500;
   min-width: 180px;
   box-shadow: ${theme.shadows.secondary};
+
   &:hover,
   &:focus {
     background-color: ${theme.colors.hover};
