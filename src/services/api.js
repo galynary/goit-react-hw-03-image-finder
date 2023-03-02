@@ -20,11 +20,9 @@ const getImages = async (value, page = 1, perPage = 12) => {
   const { data, status } = await axios.get(`${BASE_URL}`, options);
 
   if (status !== 200 || data.totalHits === 0) {
-    // return Promise.reject(
     throw new Error(
       toast.error(`Sorry, there are no images "${value}". Please try again.`)
     );
-    // );
   } else return data;
 };
 
