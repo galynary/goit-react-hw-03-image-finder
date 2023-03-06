@@ -23,47 +23,53 @@ export class App extends Component {
     page: 1,
     totalPages: 0,
   };
-  
 
-  async componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(_, prevState) {
     const { imageName, page } = this.state;
     const { PER_PAGE } = this.props;
-	const { hits, totalHits } = data;
 
     if (prevState.imageName !== imageName || prevState.page !== page) {
       this.setState({ loading: true });
-	  try { const data = await API.getImages(imageName, page, PER_PAGE);
-		if (data.page >= data.countPages) {
-			if (page === 1) {
-				toast.success(`Hooray! We found ${totalHits} images`);
-				window.scroll(0, 0);
-			  }
-	  
-			  const countPages = Math.ceil(totalHits / PER_PAGE.current);
-			  setTotalPages(countPages);
-	  
-			  if (page >= countPages) {
-				setVisibleBtn(false);
-				toast.info(
-				  `We're sorry, but you've reached the end of search "${imageName}". Please start a new search`
-				);
-			  }
-			
-			.catch(() =>
-			  toast.error(
-				`Sorry, there are no images "${imageName}". Please try again.`
-			  )
-			)
-			.finally(() => {
-			  setLoading(false);
-			});
-		}, [imageName, page]);
-}
-  
-	
+      try {
+        const data = await API.getImages(imageName, page, PER_PAGE);
+        this.setState({ loading: false });
+        const { hits, totalHits } = data;
 
+        this.setState(({ images }) => ({
+          images: [...images, ...hits],
+        }));
 
+        if (page === 1) {
+          toast.success(`Hooray! We found ${totalHits} images`);
+          window.scroll(0, 0);
+        }
+        if (totalHits !== 0) {
+          this.setState({
+            visibleBtn: true,
+            page: page < Math.ceil(totalHits / PER_PAGE),
+          });
+        }
 
+        // const countPages = Math.ceil(totalHits / PER_PAGE);
+        // this.setState({ totalPages: countPages });
+
+        // if (page >= countPages) {
+        //   this.setState({ visibleBtn: false });
+        //   toast.info(
+        //   `We're sorry, but you've reached the end of search "${imageName}". Please start a new search`
+        //    );
+        //  }
+      } catch {
+        toast.error(
+          `Sorry, there are no images "${imageName}". Please try again.`
+        );
+      } finally {
+        this.setState({
+          loading: false,
+        });
+      }
+    }
+  }
 
   onSubmitForm = value => {
     if (value !== this.state.imageName) {
@@ -87,17 +93,6 @@ export class App extends Component {
     this.setState({ largeImg: largeImageURL, tags });
   };
 
-  onCloseByClick = evt => {
-    const clickBackdrop = evt.target.id;
-    if (clickBackdrop === 'backdrop') {
-      this.setState({ largeImg: '' });
-    }
-  };
-
-  onCloseByEscape = () => {
-    this.setState({ largeImg: '' });
-  };
-
   render() {
     const { images, loading, visibleBtn, largeImg, tags, page, totalPages } =
       this.state;
@@ -112,21 +107,16 @@ export class App extends Component {
             onLoadMore={this.onLoadMore}
             page={page}
             totalPages={totalPages}
-          />
-        )}
-        {largeImg && (
-          <Modal
-            largeImg={largeImg}
-            tags={tags}
             onCloseByClick={this.onCloseByClick}
-            onCloseByEscape={this.onCloseByEscape}
+            onCloseModal={this.onCloseModal}
           />
         )}
+        {largeImg && <Modal largeImg={largeImg} tags={tags} />}
         <ToastContainer autoClose={3000} />
       </AppWrapper>
     );
   }
-  }
+}
 
 App.propTypes = {
   PER_PAGE: PropTypes.number.isRequired,
