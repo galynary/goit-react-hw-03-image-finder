@@ -23,44 +23,47 @@ export class App extends Component {
     page: 1,
     totalPages: 0,
   };
+  
 
-  async componentDidUpdate(_, prevState) {
+  async componentDidUpdate(prevProps, prevState) {
     const { imageName, page } = this.state;
     const { PER_PAGE } = this.props;
+	const { hits, totalHits } = data;
 
     if (prevState.imageName !== imageName || prevState.page !== page) {
       this.setState({ loading: true });
+	  try { const data = await API.getImages(imageName, page, PER_PAGE);
+		if (data.page >= data.countPages) {
+			if (page === 1) {
+				toast.success(`Hooray! We found ${totalHits} images`);
+				window.scroll(0, 0);
+			  }
+	  
+			  const countPages = Math.ceil(totalHits / PER_PAGE.current);
+			  setTotalPages(countPages);
+	  
+			  if (page >= countPages) {
+				setVisibleBtn(false);
+				toast.info(
+				  `We're sorry, but you've reached the end of search "${imageName}". Please start a new search`
+				);
+			  }
+			
+			.catch(() =>
+			  toast.error(
+				`Sorry, there are no images "${imageName}". Please try again.`
+			  )
+			)
+			.finally(() => {
+			  setLoading(false);
+			});
+		}, [imageName, page]);
+}
+  
+	
 
-      const data = await API.getImages(imageName, page, PER_PAGE).finally(() =>
-        this.setState({ loading: false })
-      );
 
-      const { hits, totalHits } = data;
 
-      this.setState(({ images }) => ({
-        images: [...images, ...hits],
-      }));
-
-      if (page === 1) {
-        toast.success(`Hooray! We found ${totalHits} images`);
-        window.scroll(0, 0);
-      }
-
-      if (totalHits !== 0) {
-        this.setState({ visibleBtn: true });
-      }
-
-      const countPages = Math.ceil(totalHits / PER_PAGE);
-      this.setState({ totalPages: countPages });
-
-      if (page >= countPages) {
-        this.setState({ visibleBtn: false });
-        toast.info(
-          `We're sorry, but you've reached the end of search "${imageName}". Please start a new search`
-        );
-      }
-    }
-  }
 
   onSubmitForm = value => {
     if (value !== this.state.imageName) {
@@ -123,7 +126,7 @@ export class App extends Component {
       </AppWrapper>
     );
   }
-}
+  }
 
 App.propTypes = {
   PER_PAGE: PropTypes.number.isRequired,
