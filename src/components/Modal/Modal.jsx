@@ -13,16 +13,9 @@ export class Modal extends Component {
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
-
   handleKeyDown = evt => {
     if (evt.code === 'Escape') {
-      this.props.onCloseModal();
-    }
-  };
-  onCloseByClick = evt => {
-    const clickBackdrop = evt.target.id;
-    if (clickBackdrop === 'backdrop') {
-      this.props.onCloseModal();
+      this.props.onCloseByEscape();
     }
   };
 
@@ -42,6 +35,6 @@ export class Modal extends Component {
 Modal.propTypes = {
   largeImg: PropTypes.string.isRequired,
   tags: PropTypes.string.isRequired,
-  onCloseModal: PropTypes.func,
-  onCloseByClick: PropTypes.func,
+  onCloseByClick: PropTypes.func.isRequired,
+  onCloseByEscape: PropTypes.func.isRequired,
 };
