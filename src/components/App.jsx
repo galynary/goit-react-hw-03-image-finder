@@ -26,11 +26,11 @@ export class App extends Component {
   async componentDidUpdate(_, prevState) {
     const { imageName, page } = this.state;
     const { PER_PAGE } = this.props;
+
     if (prevState.imageName !== imageName || prevState.page !== page) {
       this.setState({ loading: true });
       try {
         const data = await API.getImages(imageName, page, PER_PAGE);
-
         const { hits, totalHits } = data;
 
         this.setState(({ images }) => ({
@@ -41,7 +41,6 @@ export class App extends Component {
           toast.success(`Hooray! We found ${totalHits} images`);
           window.scroll(0, 0);
         }
-
         if (totalHits !== 0) {
           this.setState({
             visibleBtn: true,
@@ -53,10 +52,11 @@ export class App extends Component {
         // this.setState({ totalPages: countPages });
 
         // if (page >= countPages) {
-        // this.setState({ visibleBtn: false });
-        // toast.info(
+        //   this.setState({ visibleBtn: false });
+        //   toast.info(
         //   `We're sorry, but you've reached the end of search "${imageName}". Please start a new search`
-        // );
+        //    );
+        //  }
       } catch {
         toast.error(
           `Sorry, there are no images "${imageName}". Please try again.`
@@ -90,16 +90,6 @@ export class App extends Component {
   onSelectedImage = ({ largeImageURL, tags }) => {
     this.setState({ largeImg: largeImageURL, tags });
   };
-  onCloseByClick = evt => {
-    const clickBackdrop = evt.target.id;
-    if (clickBackdrop === 'backdrop') {
-      this.setState({ largeImg: '' });
-    }
-  };
-
-  onCloseByEscape = () => {
-    this.setState({ largeImg: '' });
-  };
 
   render() {
     const { images, loading, visibleBtn, largeImg, tags, page, totalPages } =
@@ -123,7 +113,7 @@ export class App extends Component {
             largeImg={largeImg}
             tags={tags}
             onCloseByClick={this.onCloseByClick}
-            onCloseByEscape={this.onCloseByEscape}
+            closeModal={this.closeModal}
           />
         )}
         <ToastContainer autoClose={3000} />
