@@ -9,6 +9,7 @@ import { API } from '../services/api';
 import { Loader } from './Loader/Loader';
 import { ButtonLoadMore } from './ButtonLoadMore/ButtonLoadMore';
 import { Modal } from './Modal/Modal';
+
 export class App extends Component {
   static defaultProps = { PER_PAGE: 12 };
 
@@ -90,6 +91,9 @@ export class App extends Component {
   onSelectedImage = ({ largeImageURL, tags }) => {
     this.setState({ largeImg: largeImageURL, tags });
   };
+  onCloseByEscape = () => {
+    this.setState({ largeImg: '' });
+  };
 
   render() {
     const { images, loading, visibleBtn, largeImg, tags, page, totalPages } =
@@ -112,8 +116,8 @@ export class App extends Component {
           <Modal
             largeImg={largeImg}
             tags={tags}
-            onCloseByClick={this.onCloseByClick}
-            closeModal={this.closeModal}
+            closeModal={this.onSelectedImage}
+            onCloseByEscape={this.onCloseByEscape}
           />
         )}
         <ToastContainer autoClose={3000} />
