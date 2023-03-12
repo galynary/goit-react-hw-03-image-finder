@@ -43,15 +43,12 @@ export class App extends Component {
           this.setState({ visibleBtn: true });
         }
 
-        // const countPages = Math.ceil(totalHits / PER_PAGE);
-        // this.setState({ totalPages: countPages });
-
-        // if (page >= countPages) {
-        //   this.setState({ visibleBtn: false });
-        //   toast.info(
-        //   `We're sorry, but you've reached the end of search "${imageName}". Please start a new search`
-        //    );
-        //  }
+        if (page - 1 >= totalHits) {
+          this.setState({ loading: false, visibleBtn: false });
+          toast.info(
+            `We're sorry, but you've reached the end of search "${imageName}". Please start a new search`
+          );
+        }
       } catch {
         toast.error(
           `Sorry, there are no images "${imageName}". Please try again.`
