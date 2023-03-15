@@ -24,14 +24,14 @@ export class Modal extends Component {
   handleBackDrop = evt => {
     const clickBackdrop = evt.target.id;
     if (clickBackdrop === 'backdrop') {
-      this.props.closeModal();
+      this.props.onCloseModal();
     }
   };
 
   render() {
-    const { largeImg, tags, closeModal } = this.props;
+    const { largeImg, tags } = this.props;
     return createPortal(
-      <Backdrop id="backdrop" onClick={closeModal}>
+      <Backdrop id="backdrop" onClick={this.handleBackDrop}>
         <ModalWrapper>
           <img src={largeImg} alt={tags} />
         </ModalWrapper>
@@ -44,5 +44,5 @@ export class Modal extends Component {
 Modal.propTypes = {
   largeImg: PropTypes.string.isRequired,
   tags: PropTypes.string.isRequired,
-  closeModal: PropTypes.func,
+  onCloseModal: PropTypes.func,
 };

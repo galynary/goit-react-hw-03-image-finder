@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { toast, ToastContainer } from 'react-toastify';
@@ -33,14 +34,14 @@ export class App extends Component {
         const data = await API.getImages(imageName, page);
         const { hits, totalHits } = data;
         this.setState(({ images }) => ({
-          images: [...images, ...hits],
-        }));
+         ({  this.state.page < Math.ceil(totalHits / PER_PAGE)})});
+        
         if (page === 1) {
           toast.success(`Hooray! We found ${totalHits} images`);
           window.scroll(0, 0);
         }
         if (totalHits !== 0) {
-          this.setState({ visibleBtn: true });
+          this.setState({ visibleBtn: true})
         }
 
         if (page - 1 >= totalHits) {
@@ -85,6 +86,9 @@ export class App extends Component {
   onCloseByEscape = () => {
     this.setState({ largeImg: '' });
   };
+  onCloseModal = () => {
+    this.setState({ largeImg: '' });
+  };
 
   render() {
     const { images, loading, visibleBtn, largeImg, tags, page, totalPages } =
@@ -107,7 +111,7 @@ export class App extends Component {
           <Modal
             largeImg={largeImg}
             tags={tags}
-            closeModal={this.onSelectedImage}
+            onCloseModal={this.onCloseModal}
             onCloseByEscape={this.onCloseByEscape}
           />
         )}
