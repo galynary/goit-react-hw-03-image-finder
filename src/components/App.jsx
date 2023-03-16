@@ -33,22 +33,21 @@ export class App extends Component {
       try {
         const data = await API.getImages(imageName, page);
         const { hits, totalHits } = data;
+        if (hits < 1) {
+          toast.info(
+            `We're sorry, but you've reached the end of search "${imageName}". Please start a new search`
+          );
+        }
         this.setState(({ images }) => ({
-         ({  this.state.page < Math.ceil(totalHits / PER_PAGE)})});
-        
+          images: [...images, ...hits],
+        }));
+
         if (page === 1) {
           toast.success(`Hooray! We found ${totalHits} images`);
           window.scroll(0, 0);
         }
         if (totalHits !== 0) {
-          this.setState({ visibleBtn: true})
-        }
-
-        if (page - 1 >= totalHits) {
-          this.setState({ loading: false, visibleBtn: false });
-          toast.info(
-            `We're sorry, but you've reached the end of search "${imageName}". Please start a new search`
-          );
+          this.setState({ visibleBtn: true });
         }
       } catch {
         toast.error(
