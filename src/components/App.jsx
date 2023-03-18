@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { toast, ToastContainer } from 'react-toastify';
@@ -33,19 +32,15 @@ export class App extends Component {
       try {
         const data = await API.getImages(imageName, page);
         const { hits, totalHits } = data;
-        if (hits < 1) {
-          toast.info(
-            `We're sorry, but you've reached the end of search "${imageName}". Please start a new search`
-          );
-        }
-        this.setState(({ images }) => ({
-          images: [...images, ...hits],
-        }));
-
         if (page === 1) {
           toast.success(`Hooray! We found ${totalHits} images`);
           window.scroll(0, 0);
         }
+        this.setState(({ images }) => ({
+          images: [...images, ...hits],
+          visibleBtn: page < Math.ceil(totalHits / 4),
+        }));
+
         if (totalHits !== 0) {
           this.setState({ visibleBtn: true });
         }
