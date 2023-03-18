@@ -26,11 +26,13 @@ export class App extends Component {
 
   async componentDidUpdate(_, prevState) {
     const { imageName, page } = this.state;
+    const { PER_PAGE } = this.props;
 
     if (prevState.imageName !== imageName || prevState.page !== page) {
       this.setState({ loading: true });
       try {
-        const data = await API.getImages(imageName, page);
+        const data = await API.getImages(imageName, page, PER_PAGE);
+
         const { hits, totalHits } = data;
         if (page === 1) {
           toast.success(`Hooray! We found ${totalHits} images`);
@@ -38,7 +40,7 @@ export class App extends Component {
         }
         this.setState(({ images }) => ({
           images: [...images, ...hits],
-          visibleBtn: page < Math.ceil(totalHits / 4),
+          visibleBtn: page < Math.ceil(totalHits / PER_PAGE),
         }));
 
         if (totalHits !== 0) {
