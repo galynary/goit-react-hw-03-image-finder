@@ -34,14 +34,14 @@ export class App extends Component {
         const data = await API.getImages(imageName, page, PER_PAGE);
 
         const { hits, totalHits } = data;
-        if (page === 1) {
-          toast.success(`Hooray! We found ${totalHits} images`);
-          window.scroll(0, 0);
-        }
         this.setState(({ images }) => ({
           images: [...images, ...hits],
           visibleBtn: page < Math.ceil(totalHits / PER_PAGE),
         }));
+        if (page === 1) {
+          toast.success(`Hooray! We found ${totalHits} images`);
+          window.scroll(0, 0);
+        }
 
         if (totalHits !== 0) {
           this.setState({ visibleBtn: true });
