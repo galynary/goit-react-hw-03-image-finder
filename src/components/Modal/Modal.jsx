@@ -31,7 +31,7 @@ export class Modal extends Component {
   render() {
     const { largeImg, tags } = this.props;
     return createPortal(
-      <Backdrop id="backdrop" onClick={this.onCloseModal}>
+      <Backdrop id="backdrop" onClick={this.handleBackDrop}>
         <ModalWrapper>
           <img src={largeImg} alt={tags} />
         </ModalWrapper>

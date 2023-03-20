@@ -92,7 +92,7 @@ export class App extends Component {
         <Searchbar onSubmit={this.onSubmitForm} />
         {loading && <Loader />}
         <ImageGallery images={images} onSelected={this.onSelectedImage} />
-        {visibleBtn(
+        {visibleBtn && (
           <ButtonLoadMore loading={loading} onLoadMore={this.onLoadMore} />
         )}
         {largeImg && (
