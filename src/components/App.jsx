@@ -79,36 +79,27 @@ export class App extends Component {
   onSelectedImage = ({ largeImageURL, tags }) => {
     this.setState({ largeImg: largeImageURL, tags });
   };
-  onCloseByEscape = () => {
-    this.setState({ largeImg: '' });
-  };
+
   onCloseModal = () => {
     this.setState({ largeImg: '' });
   };
 
   render() {
-    const { images, loading, visibleBtn, largeImg, tags, page, totalPages } =
-      this.state;
+    const { images, loading, visibleBtn, largeImg, tags } = this.state;
 
     return (
       <AppWrapper>
         <Searchbar onSubmit={this.onSubmitForm} />
         {loading && <Loader />}
         <ImageGallery images={images} onSelected={this.onSelectedImage} />
-        {visibleBtn && !loading && (
-          <ButtonLoadMore
-            loading={loading}
-            onLoadMore={this.onLoadMore}
-            page={page}
-            totalPages={totalPages}
-          />
+        {visibleBtn(
+          <ButtonLoadMore loading={loading} onLoadMore={this.onLoadMore} />
         )}
         {largeImg && (
           <Modal
             largeImg={largeImg}
             tags={tags}
             onCloseModal={this.onCloseModal}
-            onCloseByEscape={this.onCloseByEscape}
           />
         )}
         <ToastContainer autoClose={3000} />

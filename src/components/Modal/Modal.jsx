@@ -17,7 +17,7 @@ export class Modal extends Component {
   handleKeyDown = evt => {
     if (evt.code === 'Escape') {
       console.log('close');
-      this.props.onCloseByEscape();
+      this.props.onCloseModal();
     }
   };
 
@@ -31,7 +31,7 @@ export class Modal extends Component {
   render() {
     const { largeImg, tags } = this.props;
     return createPortal(
-      <Backdrop id="backdrop" onClick={this.handleBackDrop}>
+      <Backdrop id="backdrop" onClick={this.onCloseModal}>
         <ModalWrapper>
           <img src={largeImg} alt={tags} />
         </ModalWrapper>
