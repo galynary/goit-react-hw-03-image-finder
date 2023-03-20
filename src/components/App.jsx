@@ -42,10 +42,6 @@ export class App extends Component {
           toast.success(`Hooray! We found ${totalHits} images`);
           window.scroll(0, 0);
         }
-
-        if (totalHits !== 0) {
-          this.setState({ visibleBtn: true });
-        }
       } catch {
         toast.error(
           `Sorry, there are no images "${imageName}". Please try again.`
